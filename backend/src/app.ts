@@ -5,7 +5,7 @@ import cors from 'cors';
 import authRouter from './routes/auth';
 import blogpostsRouter from './routes/blogposts';
 import tagsRouter from './routes/tags';
-import { getCachedRssFeed, regenerateRssFeed } from './utils/rssGenerator';
+import { getCachedRssFeed, regenerateAllRssFeeds } from './utils/rssGenerator';
 
 dotenv.config();
 
@@ -23,7 +23,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/blogposts', blogpostsRouter);
 app.use('/api/tags', tagsRouter);
 
-// RSS Feed Route
+// RSS Feed Routes
+// Main RSS feed (all posts)
 app.get('/rss.xml', async (req, res) => {
   try {
     const rssFeed = await getCachedRssFeed();
@@ -35,13 +36,26 @@ app.get('/rss.xml', async (req, res) => {
   }
 });
 
+// Category-specific RSS feed
+app.get('/rss/:category.xml', async (req, res) => {
+  try {
+    const { category } = req.params;
+    const rssFeed = await getCachedRssFeed(category);
+    res.type('application/rss+xml');
+    res.send(rssFeed);
+  } catch (error) {
+    console.error('Error serving category RSS feed:', error);
+    res.status(500).send('Failed to generate RSS feed');
+  }
+});
+
 
 
 // Initialize the database
 
 initializeDatabase().then(() => {
-  // Generate initial RSS feed
-  regenerateRssFeed().catch(err => console.error('Failed to generate initial RSS feed:', err));
+  // Generate initial RSS feeds (main + all categories)
+  regenerateAllRssFeeds().catch(err => console.error('Failed to generate initial RSS feeds:', err));
   
   // Start the server only after the database is initialized
   const PORT = parseInt(process.env.BLOG_BACKEND_PORT || '3000', 10);
