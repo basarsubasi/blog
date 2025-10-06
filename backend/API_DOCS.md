@@ -4,6 +4,31 @@
 
 This blog backend supports **GitHub Flavored Markdown (GFM)** with automatic conversion to HTML. When you create or update a blog post, you send markdown content, and the backend stores both the original markdown and pre-rendered HTML in the database.
 
+## RSS Feed
+
+**GET** `/rss.xml`
+
+The blog automatically generates an RSS 2.0 feed containing the 10 most recent blog posts. The feed is cached and regenerated automatically whenever a post is created, updated, or deleted.
+
+**Features:**
+- ✅ Contains the 10 most recent posts
+- ✅ Includes full HTML content
+- ✅ Includes post tags as categories
+- ✅ Cached for performance
+- ✅ Auto-regenerates on content changes
+
+**Subscribe URL:**
+```
+http://your-blog-domain.com/rss.xml
+```
+
+**Environment Variables for RSS:**
+- `BLOG_FRONTEND_URL` - Base URL for your blog (e.g., `https://blog.example.com`)
+- `BLOG_TITLE` - Title of your blog (default: "Blog")
+- `BLOG_DESCRIPTION` - Description of your blog (default: "Latest blog posts")
+
+---
+
 ## Markdown Features Supported
 
 - ✅ **Tables** - Full GFM table support

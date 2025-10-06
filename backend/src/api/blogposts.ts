@@ -4,6 +4,7 @@ import pool from '../database/connection';
 import { markdownToHtml } from '../utils/markdownToHtml';
 import slugify from 'slugify';
 import { addTagsToBlogPost, updateBlogPostTags } from './tags';
+import { regenerateRssFeed } from '../utils/rssGenerator';
 
 // Helper function to generate slug from title
 function generateSlug(title: string): string {
@@ -89,6 +90,9 @@ export const createBlogPost = async (req: Request, res: Response): Promise<void>
           tags: postTags
         }
       });
+
+      // Regenerate RSS feed
+      regenerateRssFeed().catch(err => console.error('Failed to regenerate RSS feed:', err));
     } finally {
       conn.release();
     }
@@ -376,6 +380,9 @@ export const updateBlogPost = async (req: Request, res: Response): Promise<void>
       }
 
       res.json({ message: 'Blog post updated successfully' });
+
+      // Regenerate RSS feed
+      regenerateRssFeed().catch(err => console.error('Failed to regenerate RSS feed:', err));
     } finally {
       conn.release();
     }
@@ -412,6 +419,9 @@ export const deleteBlogPost = async (req: Request, res: Response): Promise<void>
       }
 
       res.json({ message: 'Blog post deleted successfully' });
+
+      // Regenerate RSS feed
+      regenerateRssFeed().catch(err => console.error('Failed to regenerate RSS feed:', err));
     } finally {
       conn.release();
     }
