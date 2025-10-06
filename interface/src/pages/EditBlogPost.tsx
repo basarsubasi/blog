@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Wysimark, useWysimark } from 'wysimark';
+import MarkdownEditor from '@uiw/react-markdown-editor';
 import { useLanguage } from '../contexts/LanguageContext';
 import api from '../utils/api';
 import type { BlogPost, Tag } from '../types';
@@ -18,9 +18,8 @@ const EditBlogPost: React.FC = () => {
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [content, setContent] = useState('');
   
-  const wysimark = useWysimark({ initialValue: '' });
-
   useEffect(() => {
     const fetchData = async () => {
       if (!slug) return;
@@ -38,7 +37,7 @@ const EditBlogPost: React.FC = () => {
         setCategory(postData.category);
         setSelectedTags(postData.tags || []);
         setDatePosted(postData.date_posted.split('T')[0]);
-        wysimark.resetValue(postData.content_markdown || '');
+        setContent(postData.content_markdown || '');
         
         setAvailableTags(tagsResponse.data.tags);
       } catch (error) {
@@ -55,8 +54,6 @@ const EditBlogPost: React.FC = () => {
     e.preventDefault();
     
     if (!post) return;
-    
-    const content = wysimark.getValue();
     
     if (!title.trim() || !author.trim() || !category.trim() || !content.trim()) {
       alert(t('error'));
@@ -194,8 +191,12 @@ const EditBlogPost: React.FC = () => {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {t('content')}
           </label>
-          <div className="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900">
-            <Wysimark wysimark={wysimark} />
+          <div className="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden">
+            <MarkdownEditor
+              value={content}
+              onChange={setContent}
+              height="400px"
+            />
           </div>
         </div>
 

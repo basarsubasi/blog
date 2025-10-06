@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Wysimark, useWysimark } from 'wysimark';
+import MarkdownEditor from '@uiw/react-markdown-editor';
 import { useLanguage } from '../contexts/LanguageContext';
 import api from '../utils/api';
 import type { Tag } from '../types';
@@ -15,8 +15,7 @@ const CreateBlogPost: React.FC = () => {
   const [datePosted, setDatePosted] = useState(new Date().toISOString().split('T')[0]);
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
   const [creating, setCreating] = useState(false);
-  
-  const wysimark = useWysimark({ initialValue: '' });
+  const [content, setContent] = useState('');
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -33,8 +32,6 @@ const CreateBlogPost: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const content = wysimark.getValue();
     
     if (!title.trim() || !author.trim() || !category.trim() || !content.trim()) {
       alert(t('error'));
@@ -156,8 +153,12 @@ const CreateBlogPost: React.FC = () => {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {t('content')}
           </label>
-          <div className="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900">
-            <Wysimark wysimark={wysimark} />
+          <div className="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden">
+            <MarkdownEditor
+              value={content}
+              onChange={setContent}
+              height="400px"
+            />
           </div>
         </div>
 

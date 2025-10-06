@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const authenticate = async (apiKey: string): Promise<boolean> => {
     try {
-      const response = await api.post<AuthResponse>('/api/auth', null, {
+      const response = await api.post<AuthResponse>('/api/auth', {}, {
         headers: { 'x-api-key': apiKey },
       });
       

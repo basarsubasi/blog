@@ -11,12 +11,13 @@
   },
   "dependencies": {
     "@ionic/react": "^8.7.5",
+    "@uiw/react-markdown-editor": "^6.1.4",
+    "@uiw/react-markdown-preview": "^5.1.5",
     "axios": "^1.12.2",
     "ionicons": "^8.0.13",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.3",
-    "wysimark": "^0.2.3"
+    "react-router-dom": "^7.9.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
