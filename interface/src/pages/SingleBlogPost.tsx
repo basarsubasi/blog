@@ -83,10 +83,22 @@ const SingleBlogPost: React.FC = () => {
 
     const blocks = contentRef.current.querySelectorAll('pre code');
     blocks.forEach((block) => {
-      if (!block.classList.contains('hljs')) {
-        block.classList.add('hljs');
+      const element = block as HTMLElement;
+
+      if (element.dataset.highlighted === 'yes') {
+        return;
       }
-      hljs.highlightElement(block as HTMLElement);
+
+      if (element.querySelector('span[class^="hljs"]')) {
+        element.dataset.highlighted = 'yes';
+        return;
+      }
+
+      if (!element.classList.contains('hljs')) {
+        element.classList.add('hljs');
+      }
+
+      hljs.highlightElement(element);
     });
   }, [post, theme]);
 
