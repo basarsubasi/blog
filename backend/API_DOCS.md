@@ -128,6 +128,46 @@ GET /api/blogposts?limit=5&offset=0&category=Technology
 
 ---
 
+### Get Blog Posts by Category
+
+**GET** `/api/blogposts/category/:category`
+
+Retrieves all blog posts in a specific category (no authentication required).
+
+**Query Parameters:**
+- `limit` (optional) - Number of posts to return (default: 10)
+- `offset` (optional) - Number of posts to skip (default: 0)
+
+**Example:**
+```
+GET /api/blogposts/category/Technology?limit=5
+```
+
+**Response (200 OK):**
+```json
+{
+  "posts": [
+    {
+      "uuid": "550e8400-e29b-41d4-a716-446655440000",
+      "title": "My Amazing Blog Post",
+      "author": "John Doe",
+      "category": "Technology",
+      "date_posted": "2025-10-06T12:00:00.000Z",
+      "slug": "my-amazing-blog-post",
+      "content_html": "<h1>Hello World</h1>...",
+      "created_at": "2025-10-06T12:00:00.000Z",
+      "updated_at": "2025-10-06T12:00:00.000Z",
+      "tags": ["javascript", "tutorial", "backend"]
+    }
+  ],
+  "category": "Technology",
+  "limit": 5,
+  "offset": 0
+}
+```
+
+---
+
 ### Get Single Blog Post by Slug
 
 **GET** `/api/blogposts/:slug`

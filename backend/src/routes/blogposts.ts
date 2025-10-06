@@ -3,6 +3,7 @@ import { verifyJWT } from '../middleware/authMiddleware';
 import {
   createBlogPost,
   getAllBlogPosts,
+  getBlogPostsByCategory,
   searchBlogPosts,
   getBlogPostBySlug,
   updateBlogPost,
@@ -24,6 +25,13 @@ router.post('/', verifyJWT, createBlogPost);
  * Query params: ?limit=10&offset=0&category=tech
  */
 router.get('/', getAllBlogPosts);
+
+/**
+ * GET /api/blogposts/category/:category
+ * Get blog posts by category
+ * Query params: ?limit=10&offset=0
+ */
+router.get('/category/:category', getBlogPostsByCategory);
 
 /**
  * GET /api/blogposts/search

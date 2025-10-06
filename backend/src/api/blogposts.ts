@@ -165,6 +165,57 @@ export const getAllBlogPosts = async (req: Request, res: Response): Promise<void
 };
 
 /**
+ * Get blog posts by category
+ * Query params: ?limit=10&offset=0
+ */
+export const getBlogPostsByCategory = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { category } = req.params;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const query = `
+      SELECT uuid, title, author, category, date_posted, slug, 
+             content_html, created_at, updated_at
+      FROM blogposts
+      WHERE category = ?
+      ORDER BY date_posted DESC
+      LIMIT ? OFFSET ?
+    `;
+
+    const conn = await pool.getConnection();
+    try {
+      const rows: any[] = await conn.query(query, [category, limit, offset]);
+
+      // Fetch tags for each blog post
+      for (const post of rows) {
+        const tagsQuery = `
+          SELECT t.name
+          FROM tags t
+          INNER JOIN blogpost_tags bt ON t.uuid = bt.tag_uuid
+          WHERE bt.blogpost_uuid = ?
+          ORDER BY t.name ASC
+        `;
+        const tagRows: any[] = await conn.query(tagsQuery, [post.uuid]);
+        post.tags = tagRows.map(row => row.name);
+      }
+
+      res.json({
+        posts: rows,
+        category,
+        limit,
+        offset
+      });
+    } finally {
+      conn.release();
+    }
+  } catch (error) {
+    console.error('Error fetching blog posts by category:', error);
+    res.status(500).json({ error: 'Failed to fetch blog posts by category' });
+  }
+};
+
+/**
  * Search blog posts with pagination using full-text search
  * Query params: ?q=searchTerm&limit=10&offset=0
  */
