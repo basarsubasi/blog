@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* Custom base styles */
+body {
+  margin: 0;
+  background-color: white;
+  color: rgb(17 24 39);
+  transition: background-color 150ms, color 150ms;
+}
+
+.dark body {
+  background-color: rgb(17 24 39);
+  color: rgb(243 244 246);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Layout styles inspired by gallery */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  background-color: white;
+}
+
+.dark .page-header {
+  background-color: rgb(17 24 39);
+}
+
+.main-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+}
+
+.title-suffix {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+}
+
+.header-links {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.header-button {
+  padding: 0.5rem 1rem;
+  background-color: black;
+  color: white;
+  border-radius: 0.25rem;
+  font-weight: 700;
+  transition: background-color 150ms;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.header-button:hover {
+  background-color: rgb(31 41 55);
+}
+
+.dark .header-button {
+  background-color: white;
+  color: black;
+}
+
+.dark .header-button:hover {
+  background-color: rgb(229 231 235);
+}
+
+.icon-button {
+  padding: 0.5rem;
+  background-color: transparent;
+  color: rgb(17 24 39);
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 150ms;
+}
+
+.dark .icon-button {
+  color: rgb(243 244 246);
+}
+
+.icon-button:hover {
+  opacity: 0.7;
+}
+
+.page-footer {
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgb(107 114 128);
+  padding: 0.75rem 0;
+  background-color: white;
+}
+
+.dark .page-footer {
+  color: rgb(156 163 175);
+  background-color: rgb(17 24 39);
+}
+
+.content {
+  flex: 1;
+  background-color: white;
+}
+
+.dark .content {
+  background-color: rgb(17 24 39);
+}
+
