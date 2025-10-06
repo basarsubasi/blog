@@ -41,7 +41,7 @@ const BlogPostList: React.FC<BlogPostListProps> = ({ posts }) => {
           className={`pb-6 ${index < posts.length - 1 ? 'border-bottom color-border-muted mb-6' : ''}`}
         >
           <Link to={`/posts/${post.slug}`} className="blogpost-title-link">
-            <h2 className="blogpost-title text-bold">
+            <h2 className="blogpost-title text-bold ">
               {post.title}
             </h2>
           </Link>
@@ -56,7 +56,7 @@ const BlogPostList: React.FC<BlogPostListProps> = ({ posts }) => {
                 <Link
                   key={tag}
                   to={`/tags/${tag}`}
-                  className="Label Label--accent mr-2 mb-2"
+                  className="Label Label--accent color-fg-default mr-2 mb-2"
                 >
                   #{tag}
                 </Link>
