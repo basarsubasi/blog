@@ -21,6 +21,7 @@ const EditBlogPost: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState('');
+  const [newTagName, setNewTagName] = useState('');
   
   useEffect(() => {
     const fetchData = async () => {
@@ -90,6 +91,16 @@ const EditBlogPost: React.FC = () => {
     );
   };
 
+  const handleAddTag = () => {
+    const trimmedTag = newTagName.trim();
+    if (!trimmedTag) return;
+    
+    if (!selectedTags.includes(trimmedTag)) {
+      setSelectedTags((prev) => [...prev, trimmedTag]);
+    }
+    setNewTagName('');
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -121,7 +132,7 @@ const EditBlogPost: React.FC = () => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="form-input"
             required
           />
         </div>
@@ -135,7 +146,7 @@ const EditBlogPost: React.FC = () => {
               type="text"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="form-input"
               required
             />
           </div>
@@ -148,7 +159,7 @@ const EditBlogPost: React.FC = () => {
               type="text"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="form-input"
               required
             />
           </div>
@@ -162,7 +173,7 @@ const EditBlogPost: React.FC = () => {
             type="date"
             value={datePosted}
             onChange={(e) => setDatePosted(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="form-input [color-scheme:light] dark:[color-scheme:dark]"
             required
           />
         </div>
@@ -171,28 +182,54 @@ const EditBlogPost: React.FC = () => {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {t('tags')}
           </label>
-          {availableTags.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
-              {availableTags.map((tag) => (
-                <button
-                  key={tag.uuid}
-                  type="button"
-                  onClick={() => toggleTag(tag.name)}
-                  className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                    selectedTags.includes(tag.name)
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  {tag.name}
-                </button>
-              ))}
+          <div className="space-y-3">
+            {selectedTags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {selectedTags.map((tag, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => toggleTag(tag)}
+                    className="px-3 py-1 text-sm rounded-full transition-colors bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    {tag} ×
+                  </button>
+                ))}
+              </div>
+            )}
+            {availableTags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {availableTags.filter(tag => !selectedTags.includes(tag.name)).map((tag) => (
+                  <button
+                    key={tag.uuid}
+                    type="button"
+                    onClick={() => toggleTag(tag.name)}
+                    className="px-3 py-1 text-sm rounded-full transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                  >
+                    {tag.name}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newTagName}
+                onChange={(e) => setNewTagName(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
+                placeholder="Type tag name and press Enter or Add..."
+                className="flex-1 form-input"
+              />
+              <button
+                type="button"
+                onClick={handleAddTag}
+                disabled={!newTagName.trim()}
+                className="form-button-primary"
+              >
+                Add
+              </button>
             </div>
-          ) : (
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              No tags available. Tags will appear here once created.
-            </p>
-          )}
+          </div>
         </div>
 
         <div>
@@ -208,18 +245,18 @@ const EditBlogPost: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex gap-4 pt-4">
+        <div className="flex justify-center gap-4 pt-4">
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 font-medium"
+            className="form-button-primary px-8"
           >
             {saving ? t('saving') : t('save')}
           </button>
           <button
             type="button"
             onClick={() => navigate(`/posts/${post.slug}`)}
-            className="px-6 py-2 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors font-medium"
+            className="form-button-secondary px-8"
           >
             {t('cancel')}
           </button>
