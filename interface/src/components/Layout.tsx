@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   });
 
   const headerColor = theme === 'dark' ? '#f0f6fc' : '#24292f';
-  const apiBaseUrl ='http://localhost:3000';
+  const apiBaseUrl ='http://blogbackend.localhost';
   const rssUrl = `${apiBaseUrl.replace(/\/$/, '')}/rss.xml`;
 
   const handleCreateClick = () => {
