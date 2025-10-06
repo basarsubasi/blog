@@ -90,6 +90,83 @@ const SingleBlogPost: React.FC = () => {
     });
   }, [post, theme]);
 
+  useEffect(() => {
+    if (!post || !contentRef.current) {
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scrollToHash = (rawHash: string, smooth = true): HTMLElement | null => {
+      const trimmed = rawHash.replace(/^#/, '');
+      if (!trimmed) {
+        return null;
+      }
+
+      const decoded = decodeURIComponent(trimmed);
+      const target = document.getElementById(decoded) || document.getElementById(`user-content-${decoded}`);
+      if (!target) {
+        return null;
+      }
+
+      target.scrollIntoView({
+        behavior: prefersReducedMotion || !smooth ? 'auto' : 'smooth',
+        block: 'start',
+      });
+
+      return target;
+    };
+
+    const handleHashChange = () => {
+      scrollToHash(window.location.hash, false);
+    };
+
+  const anchors = Array.from(contentRef.current.querySelectorAll<HTMLAnchorElement>('a[href*="#"]'));
+    const listeners: Array<{ anchor: HTMLAnchorElement; handler: (event: MouseEvent) => void }> = [];
+
+    anchors.forEach((anchor) => {
+      const handler = (event: MouseEvent) => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+          return;
+        }
+
+        let url: URL;
+        try {
+          url = new URL(anchor.href, window.location.origin);
+        } catch (error) {
+          return;
+        }
+
+        if (url.pathname !== window.location.pathname || !url.hash || url.hash === '#') {
+          return;
+        }
+
+        event.preventDefault();
+        const target = scrollToHash(url.hash);
+        if (target) {
+          const newHash = `#${target.id}`;
+          if (window.location.hash !== newHash) {
+            window.history.replaceState(null, '', `${url.pathname}${newHash}`);
+          }
+        }
+      };
+
+      anchor.addEventListener('click', handler);
+      listeners.push({ anchor, handler });
+    });
+
+    window.addEventListener('hashchange', handleHashChange);
+    // Ensure initial load with hash brings the section into view.
+    if (window.location.hash) {
+      // Use a microtask to allow the DOM to settle with highlighted code blocks.
+      queueMicrotask(() => scrollToHash(window.location.hash, false));
+    }
+
+    return () => {
+      listeners.forEach(({ anchor, handler }) => anchor.removeEventListener('click', handler));
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, [post]);
+
   if (loading) {
     return (
       <div className="d-flex flex-justify-center flex-items-center py-6">
