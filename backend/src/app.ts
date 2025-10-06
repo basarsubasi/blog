@@ -36,21 +36,6 @@ app.get('/rss.xml', async (req, res) => {
   }
 });
 
-// Category-specific RSS feed
-app.get('/rss/:category.xml', async (req, res) => {
-  try {
-    const { category } = req.params;
-    const rssFeed = await getCachedRssFeed(category);
-    res.type('application/rss+xml');
-    res.send(rssFeed);
-  } catch (error) {
-    console.error('Error serving category RSS feed:', error);
-    res.status(500).send('Failed to generate RSS feed');
-  }
-});
-
-
-
 // Initialize the database
 
 initializeDatabase().then(() => {

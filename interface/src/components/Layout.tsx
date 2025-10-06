@@ -22,6 +22,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   });
 
   const headerColor = theme === 'dark' ? '#f0f6fc' : '#24292f';
+  const apiBaseUrl ='http://localhost:3000';
+  const rssUrl = `${apiBaseUrl.replace(/\/$/, '')}/rss.xml`;
 
   const handleCreateClick = () => {
     if (isAuthenticated) {
@@ -159,7 +161,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
           <div className="d-flex flex-items-center" style={{ gap: '0.75rem' }}>
             <a
-              href="/rss.xml"
+              href={rssUrl}
               className="btn btn-sm btn-outline d-inline-flex flex-items-center"
               style={{
                 color: 'var(--color-fg-default)',
