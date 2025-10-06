@@ -1,10 +1,20 @@
 export const translations = {
   en: {
     // Header
+    blogtitle:"basarsubasi's",
     blog: 'blog',
     create: 'create',
     theme: 'theme',
     language: 'language',
+    search: 'Search',
+    searchPlaceholder: 'Search posts…',
+    technology: 'technology',
+    philosophy: 'philosophy',
+    searchPrompt: 'Start typing to search the blog.',
+    searchNoResults: 'No posts matched your search.',
+    searchResultsFor: 'Search results for',
+    searchError: 'Failed to load search results.',
+    searching: 'Searching…',
     
     // Footer
     sourceCode: 'source code',
@@ -48,10 +58,20 @@ export const translations = {
   },
   tr: {
     // Header
+    blogtitle:"basarsubasi's",
     blog: 'blog',
     create: 'oluştur',
     theme: 'tema',
     language: 'dil',
+    search: 'Ara',
+    searchPlaceholder: 'Yazılarda ara…',
+    technology: 'teknoloji',
+    philosophy: 'felsefe',
+    searchPrompt: 'Blogda aramak için yazmaya başlayın.',
+    searchNoResults: 'Aramanızla eşleşen yazı bulunamadı.',
+    searchResultsFor: 'Arama sonuçları',
+    searchError: 'Arama sonuçları yüklenemedi.',
+    searching: 'Aranıyor…',
     
     // Footer
     sourceCode: 'kaynak kodu',

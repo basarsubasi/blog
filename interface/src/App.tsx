@@ -11,6 +11,7 @@ import CreateBlogPost from './pages/CreateBlogPost';
 import EditBlogPost from './pages/EditBlogPost';
 import CategoryPage from './pages/CategoryPage';
 import TagPage from './pages/TagPage';
+import SearchPage from './pages/SearchPage';
 
 const AppContent: React.FC = () => {
   const { loading, showAuthModal, setShowAuthModal } = useAuth();
@@ -36,6 +37,7 @@ const AppContent: React.FC = () => {
           <Route path="/edit/:slug" element={<EditBlogPost />} />
           <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/tags/:tag" element={<TagPage />} />
+          <Route path="/search" element={<SearchPage />} />
         </Routes>
       </Layout>
       

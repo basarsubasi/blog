@@ -74,7 +74,7 @@ const EditBlogPost: React.FC = () => {
         content_markdown: content,
       });
 
-      navigate(`/posts/${post.slug}`);
+      navigate(`/`);
     } catch (error) {
       console.error('Error updating post:', error);
       alert(t('error'));
