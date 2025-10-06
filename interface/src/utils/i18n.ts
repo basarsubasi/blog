@@ -16,7 +16,7 @@ export const translations = {
     authenticationFailed: 'Authentication failed',
     
     // Blog list
-    readMore: 'Read more...',
+    readMore: 'Read more',
     noPosts: 'No posts yet',
     
     // Single post
@@ -63,7 +63,7 @@ export const translations = {
     authenticationFailed: 'Kimlik doğrulama başarısız',
     
     // Blog list
-    readMore: 'Devamını oku...',
+    readMore: 'Devamını oku',
     noPosts: 'Henüz yazı yok',
     
     // Single post

@@ -280,7 +280,7 @@ export const getBlogPostBySlug = async (req: Request, res: Response): Promise<vo
 
     const query = `
       SELECT uuid, title, author, category, date_posted, slug,
-             content_html, created_at, updated_at
+             content_html, content_markdown, created_at, updated_at
       FROM blogposts
       WHERE slug = ?
     `;
