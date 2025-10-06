@@ -61,7 +61,7 @@ export async function generateRssFeed(category?: string): Promise<string> {
     <title>${escapeXml(feedTitle)}</title>
     <link>${baseUrl}</link>
     <description>${escapeXml(feedDescription)}</description>
-    <language>en</language>
+    <language>tr</language>
     <lastBuildDate>${currentDate}</lastBuildDate>
     <atom:link href="${feedUrl}" rel="self" type="application/rss+xml"/>
 `;
