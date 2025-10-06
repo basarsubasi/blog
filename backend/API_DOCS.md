@@ -222,6 +222,7 @@ This backend uses **markdown-it** with the following plugins:
 - `markdown-it-task-lists` - GitHub-style task lists
 - `markdown-it-github-headings` - GitHub-style heading anchors
 - `markdown-it-imsize` - Image size support (=WIDTHxHEIGHT or =WIDTH%)
+-`markdown-it-github-alerts` - Alerts;
 
 ## URL Slug Generation
 
@@ -230,12 +231,10 @@ Slugs are automatically generated from post titles using the `slugify` library w
 - Removes special characters
 - Replaces spaces with hyphens
 - Ensures URL-safe strings
+- Turkish locale
 
 Example: `"My Amazing Blog Post!"` → `"my-amazing-blog-post"`
 
-## Example Markdown
-
-See `/examples/markdown-example.md` for a comprehensive example of all supported markdown features.
 
 ## Database Schema
 

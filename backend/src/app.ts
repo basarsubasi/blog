@@ -1,9 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import initializeDatabase from './database/init-db';
-import cors from 'cors'; 
-import {verifyJWT} from './middleware/authMiddleware';
-import { getJwtToken } from './routes/auth';
+import cors from 'cors';
+import authRouter from './routes/auth';
 import blogpostsRouter from './routes/blogposts';
 
 dotenv.config();
@@ -17,14 +16,8 @@ app.use(cors({
   allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin', 'X-Requested-With', 'X-Api-Key']
 }));
 
-app.post('/api/auth', getJwtToken);
-
-// Add endpoint to check authentication status
-app.get('/api/auth/check', verifyJWT, (req: express.Request, res: express.Response) => {
-  res.json({ authenticated: true, user: req.user });
-});
-
-// Blog posts routes
+// API Routes
+app.use('/api/auth', authRouter);
 app.use('/api/blogposts', blogpostsRouter);
 
 

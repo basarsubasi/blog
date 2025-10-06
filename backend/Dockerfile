@@ -16,8 +16,5 @@ COPY . .
 # Build the TypeScript code
 RUN npx tsc
 
-# Expose port
-EXPOSE $BLOG_BACKEND_PORT
-
 # Start the application
 CMD ["node", "dist/app.js"]
