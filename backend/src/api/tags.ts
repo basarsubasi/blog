@@ -35,34 +35,6 @@ export const getAllTags = async (req: Request, res: Response): Promise<void> => 
 };
 
 /**
- * Get tags for a specific blog post
- */
-export const getTagsForBlogPost = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { uuid } = req.params;
-
-    const query = `
-      SELECT t.uuid, t.name
-      FROM tags t
-      INNER JOIN blogpost_tags bt ON t.uuid = bt.tag_uuid
-      WHERE bt.blogpost_uuid = ?
-      ORDER BY t.name ASC
-    `;
-
-    const conn = await pool.getConnection();
-    try {
-      const rows = await conn.query(query, [uuid]);
-      res.json({ tags: rows });
-    } finally {
-      conn.release();
-    }
-  } catch (error) {
-    console.error('Error fetching tags for blog post:', error);
-    res.status(500).json({ error: 'Failed to fetch tags for blog post' });
-  }
-};
-
-/**
  * Get blog posts by tag
  * Query params: ?limit=10&offset=0
  */

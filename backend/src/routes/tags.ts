@@ -1,7 +1,6 @@
 import express from 'express';
 import {
   getAllTags,
-  getTagsForBlogPost,
   getBlogPostsByTag
 } from '../api/tags';
 
@@ -21,10 +20,6 @@ router.get('/', getAllTags);
  */
 router.get('/:tagName/posts', getBlogPostsByTag);
 
-/**
- * GET /api/tags/blogpost/:uuid
- * Get tags for a specific blog post
- */
-router.get('/blogpost/:uuid', getTagsForBlogPost);
+
 
 export default router;
