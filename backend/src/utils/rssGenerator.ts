@@ -46,7 +46,7 @@ export async function generateRssFeed(category?: string): Promise<string> {
     }
 
     // Build RSS feed
-    const baseUrl = process.env.BLOG_FRONTEND_URL || 'http://localhost:3000';
+    const baseUrl = 'http://localhost:5173';
     const currentDate = new Date().toUTCString();
     const blogTitle = "basarsubasi's blog";
     const blogDescription = "Son Yazılar";

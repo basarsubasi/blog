@@ -4,7 +4,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { IonIcon } from '@ionic/react';
-import { languageOutline, moon, bulb } from 'ionicons/icons';
+import { languageOutline, moon, bulb, logoRss } from 'ionicons/icons';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -157,13 +157,31 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               {t('sourceCode')}
             </a>
           </div>
-          <button
-            type="button"
-            onClick={handleCreateClick}
-            className="btn btn-primary btn-sm"
-          >
-            {t('create')}
-          </button>
+          <div className="d-flex flex-items-center" style={{ gap: '0.75rem' }}>
+            <a
+              href="/rss.xml"
+              className="btn btn-sm btn-outline d-inline-flex flex-items-center"
+              style={{
+                color: 'var(--color-fg-default)',
+                borderColor: 'var(--color-border-default)',
+                backgroundColor: 'var(--color-canvas-subtle)',
+                textDecoration: 'none',
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={t('rssFeed')}
+            >
+              <IonIcon icon={logoRss} style={{ fontSize: '1.1rem', marginRight: '0.35rem' }} />
+              <span>{t('rssFeed')}</span>
+            </a>
+            <button
+              type="button"
+              onClick={handleCreateClick}
+              className="btn btn-primary btn-sm"
+            >
+              {t('create')}
+            </button>
+          </div>
         </div>
       </footer>
     </div>

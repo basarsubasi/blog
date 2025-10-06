@@ -15,6 +15,7 @@ export const translations = {
     searchResultsFor: 'Search results for',
     searchError: 'Failed to load search results.',
     searching: 'Searching…',
+  rssFeed: 'RSS',
     
     // Footer
     sourceCode: 'source code',
@@ -72,6 +73,7 @@ export const translations = {
     searchResultsFor: 'Arama sonuçları',
     searchError: 'Arama sonuçları yüklenemedi.',
     searching: 'Aranıyor…',
+  rssFeed: 'RSS',
     
     // Footer
     sourceCode: 'kaynak kodu',
