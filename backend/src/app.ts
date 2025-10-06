@@ -7,7 +7,7 @@ import blogpostsRouter from './routes/blogposts';
 import tagsRouter from './routes/tags';
 import { getCachedRssFeed, regenerateAllRssFeeds } from './utils/rssGenerator';
 
-dotenv.config();
+dotenv.config({ path: '../../.env' });
 
 const app = express();
 app.use(express.json());

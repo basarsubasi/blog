@@ -1,8 +1,6 @@
 import pool from '../database/connection';
-import dotenv from 'dotenv'
 
 
-dotenv.config({ path: '../../.env' });
 
 // Cache for the main RSS feed
 let rssFeedCache: string | null = null;
@@ -13,7 +11,7 @@ let rssFeedCache: string | null = null;
 export async function generateRssFeed(): Promise<string> {
   const conn = await pool.getConnection();
   try {
-    // Get the 10 most recent blog posts (optionally filtered by category)
+    // Get the 10 most recent blog posts
     const query = `
       SELECT uuid, title, author, category, date_posted, slug, content_html, updated_at
       FROM blogposts
@@ -36,7 +34,7 @@ export async function generateRssFeed(): Promise<string> {
     }
 
     // Build RSS feed
-    const baseUrl = 'http://localhost:5173';
+    const baseUrl = 'http://blogfrontend.local';
     const currentDate = new Date().toUTCString();
     const blogTitle = "basarsubasi's blog";
     const blogDescription = "Son Yazılar";
@@ -80,6 +78,8 @@ ${categories}
 
     // Cache the feed
     rssFeedCache = rss;
+
+    console.log("rss feed cached")
     
     return rss;
   } finally {
