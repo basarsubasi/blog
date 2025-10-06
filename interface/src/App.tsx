@@ -17,8 +17,11 @@ const AppContent: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+      <div
+        className="d-flex flex-justify-center flex-items-center color-bg-canvas-inset"
+        style={{ minHeight: '100vh' }}
+      >
+        <p className="color-fg-muted">Loading...</p>
       </div>
     );
   }

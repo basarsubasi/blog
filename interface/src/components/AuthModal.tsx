@@ -27,17 +27,17 @@ const AuthModal: React.FC<AuthModalProps> = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-md w-full mx-4">
-        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+    <div
+      className="position-fixed d-flex flex-justify-center flex-items-center z-2"
+      style={{ inset: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+    >
+      <div className="Box Box--spacious width-full" style={{ maxWidth: '24rem' }}>
+        <h2 className="h3 text-bold mb-3 color-fg-default">
           {t('enterApiKey')}
         </h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="apiKey"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-            >
+          <div className="mb-3">
+            <label htmlFor="apiKey" className="form-label">
               {t('apiKey')}
             </label>
             <input
@@ -45,17 +45,17 @@ const AuthModal: React.FC<AuthModalProps> = () => {
               id="apiKey"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+              className="form-control width-full"
               required
             />
           </div>
           {error && (
-            <p className="text-red-500 text-sm mb-4">{error}</p>
+            <p className="color-fg-danger text-small mb-3">{error}</p>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="w-full header-button disabled:opacity-50"
+            className="btn btn-primary width-full"
           >
             {loading ? '...' : t('authenticate')}
           </button>

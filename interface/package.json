@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@ionic/react": "^8.7.5",
+    "@primer/css": "^22.0.2",
     "@uiw/react-markdown-editor": "^6.1.4",
     "@uiw/react-markdown-preview": "^5.1.5",
     "axios": "^1.12.2",
+    "github-markdown-css": "^5.8.1",
+    "highlight.js": "^11.11.1",
     "ionicons": "^8.0.13",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

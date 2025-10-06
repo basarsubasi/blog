@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 import api from '../utils/api';
 import type { BlogPost } from '../types';
 
@@ -10,6 +11,7 @@ const SingleBlogPost: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { t } = useLanguage();
+  const { theme } = useTheme();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
@@ -17,7 +19,7 @@ const SingleBlogPost: React.FC = () => {
   useEffect(() => {
     const fetchPost = async () => {
       if (!slug) return;
-      
+
       try {
         const response = await api.get<BlogPost>(`/api/blogposts/${slug}`);
         setPost(response.data);
@@ -50,47 +52,44 @@ const SingleBlogPost: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+      <div className="d-flex flex-justify-center flex-items-center py-6">
+        <p className="color-fg-muted">Loading...</p>
       </div>
     );
   }
 
   if (!post) {
     return (
-      <div className="py-20 text-center">
-        <p className="text-gray-500 dark:text-gray-400">Post not found</p>
+      <div className="d-flex flex-justify-center py-6">
+        <p className="color-fg-muted">Post not found</p>
       </div>
     );
   }
 
   return (
-    <article className="py-8">
-      <header className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          {post.title}
-        </h1>
-        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-          <span>{post.author}</span>
-          <span>•</span>
-          <time>{new Date(post.date_posted).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</time>
-          <span>•</span>
-          <Link 
-            to={`/category/${post.category}`}
-            className="hover:text-gray-900 dark:hover:text-white transition-colors"
-          >
+    <article>
+      <header className="mb-5">
+        <h1 className="f00-light text-bold mb-3 color-fg-default">{post.title}</h1>
+        <div className="d-flex flex-wrap flex-items-center text-small color-fg-muted">
+          <span className="mr-2">{post.author}</span>
+          <span className="mr-2">·</span>
+          <time className="mr-2">
+            {new Date(post.date_posted).toLocaleDateString('en-GB', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+            })}
+          </time>
+          <span className="mr-2">·</span>
+          <Link to={`/category/${post.category}`} className="Link--secondary">
             {post.category}
           </Link>
         </div>
         {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-4">
+          <div className="d-flex flex-wrap mt-3">
             {post.tags.map((tag) => (
-              <Link
-                key={tag}
-                to={`/tags/${tag}`}
-                className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                {tag}
+              <Link key={tag} to={`/tags/${tag}`} className="Label Label--accent mr-2 mb-2">
+                #{tag}
               </Link>
             ))}
           </div>
@@ -98,23 +97,17 @@ const SingleBlogPost: React.FC = () => {
       </header>
 
       <div
-        className="prose dark:prose-invert max-w-none"
+        className="markdown-body"
+        data-color-mode={theme}
         dangerouslySetInnerHTML={{ __html: post.content_html }}
       />
 
       {isAuthenticated && (
-        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex gap-4">
-          <Link
-            to={`/edit/${post.slug}`}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
+        <div className="mt-6 pt-6 border-top color-border-muted d-flex">
+          <Link to={`/edit/${post.slug}`} className="btn btn-primary mr-2">
             {t('edit') || 'Edit'}
           </Link>
-          <button
-            onClick={handleDelete}
-            disabled={deleting}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
-          >
+          <button onClick={handleDelete} disabled={deleting} className="btn btn-danger">
             {deleting ? 'Deleting...' : t('delete')}
           </button>
         </div>

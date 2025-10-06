@@ -18,6 +18,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     const root = window.document.documentElement;
+    root.setAttribute('data-color-mode', theme);
+    root.setAttribute('data-light-theme', 'light');
+    root.setAttribute('data-dark-theme', 'dark');
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
     localStorage.setItem('theme', theme);

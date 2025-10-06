@@ -25,55 +25,59 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="page-header">
-        <Link to="/" className="main-title">
-          basarsubasi's <span className="title-suffix">blog</span>
-        </Link>
-        <div className="header-links">
-          <button
-            onClick={handleCreateClick}
-            className="header-button"
-          >
-            {t('create')}
-          </button>
-          <button
-            onClick={toggleTheme}
-            className="icon-button"
-            title={t('theme')}
-          >
-         <IonIcon icon={theme === 'light' ? moon : bulb} />   
-           </button>
-          <button
-            onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
-            className="icon-button"
-            title={t('language')}
-          >
-            <IonIcon icon={languageOutline} />
-            <span style={{ marginLeft: '0.25rem', fontSize: '0.875rem' }}>{language.toUpperCase()}</span>
-          </button>
+    <div className="d-flex flex-column color-bg-canvas" style={{ minHeight: '100vh' }}>
+      <header className="color-bg-default border-bottom color-border-muted">
+        <div className="container-lg d-flex flex-justify-between flex-items-center py-3">
+          <Link to="/" className="d-flex flex-items-center text-bold color-fg-default no-underline f3">
+            basarsubasi's&nbsp;<span className="color-fg-muted">blog</span>
+          </Link>
+          <div className="d-flex flex-items-center">
+            <button
+              type="button"
+              onClick={handleCreateClick}
+              className="btn btn-primary mr-2"
+            >
+              {t('create')}
+            </button>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="btn-octicon mr-2"
+              title={t('theme')}
+            >
+              <IonIcon icon={theme === 'light' ? moon : bulb} />
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
+              className="btn btn-invisible"
+              title={t('language')}
+            >
+              <span className="mr-1"><IonIcon icon={languageOutline} /></span>
+              <span className="text-mono text-bold">{language.toUpperCase()}</span>
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Page Content */}
-      <div className="content">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="flex-auto">
+        <div className="container-lg py-6">
           {children}
         </div>
-      </div>
+      </main>
 
-      {/* Footer */}
-      <footer className="page-footer">
-        2025 © Başar Subaşı |{' '}
-        <a
-          href="https://github.com/basarsubasi/blog"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:underline"
-        >
-          {t('sourceCode')}
-        </a>
+      <footer className="color-bg-default border-top color-border-muted py-3">
+        <div className="container-lg text-small color-fg-muted">
+          2025 © Başar Subaşı ·{' '}
+          <a
+            href="https://github.com/basarsubasi/blog"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="color-fg-accent text-underline"
+          >
+            {t('sourceCode')}
+          </a>
+        </div>
       </footer>
     </div>
   );

@@ -24,8 +24,8 @@ const Homepage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+      <div className="d-flex flex-justify-center flex-items-center py-6">
+        <p className="color-fg-muted">Loading...</p>
       </div>
     );
   }
