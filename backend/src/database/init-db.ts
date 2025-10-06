@@ -36,8 +36,7 @@ async function initializeDatabase() {
     // Create the blogposts table if it doesn't exist
     await pool.query(`
     CREATE TABLE IF NOT EXISTS blogposts (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      uuid VARCHAR(36) NOT NULL UNIQUE,
+      uuid VARCHAR(36) PRIMARY KEY,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       title TEXT NOT NULL UNIQUE,
