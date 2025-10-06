@@ -1,10 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
 import api from '../utils/api';
 import type { BlogPost } from '../types';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import typescript from 'highlight.js/lib/languages/typescript';
+import json from 'highlight.js/lib/languages/json';
+import bash from 'highlight.js/lib/languages/bash';
+import python from 'highlight.js/lib/languages/python';
+import go from 'highlight.js/lib/languages/go';
+import rust from 'highlight.js/lib/languages/rust';
+import sql from 'highlight.js/lib/languages/sql';
+import c from 'highlight.js/lib/languages/c';
+import yaml from 'highlight.js/lib/languages/yaml';
+
+
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('json', json);
+hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('shell', bash);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('go', go);
+hljs.registerLanguage('rust', rust);
+hljs.registerLanguage('sql', sql);
+hljs.registerLanguage('c', c);
+hljs.registerLanguage('yaml', yaml);
+
 
 const SingleBlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -15,6 +40,7 @@ const SingleBlogPost: React.FC = () => {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -49,6 +75,20 @@ const SingleBlogPost: React.FC = () => {
       setDeleting(false);
     }
   };
+
+  useEffect(() => {
+    if (!post || !contentRef.current) {
+      return;
+    }
+
+    const blocks = contentRef.current.querySelectorAll('pre code');
+    blocks.forEach((block) => {
+      if (!block.classList.contains('hljs')) {
+        block.classList.add('hljs');
+      }
+      hljs.highlightElement(block as HTMLElement);
+    });
+  }, [post, theme]);
 
   if (loading) {
     return (
@@ -98,7 +138,10 @@ const SingleBlogPost: React.FC = () => {
 
       <div
         className="markdown-body"
+        ref={contentRef}
         data-color-mode={theme}
+        data-light-theme="light"
+        data-dark-theme="dark"
         dangerouslySetInnerHTML={{ __html: post.content_html }}
       />
 

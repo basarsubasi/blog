@@ -16,6 +16,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isAuthenticated, setShowAuthModal } = useAuth();
   const navigate = useNavigate();
 
+  const headerColor = theme === 'dark' ? '#f0f6fc' : '#24292f';
+
   const handleCreateClick = () => {
     if (isAuthenticated) {
       navigate('/create');
@@ -28,8 +30,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="d-flex flex-column color-bg-canvas" style={{ minHeight: '100vh' }}>
       <header className="color-bg-default border-bottom color-border-muted">
         <div className="container-lg d-flex flex-justify-between flex-items-center py-3">
-          <Link to="/" className="d-flex flex-items-center text-bold color-fg-default no-underline f3">
-            basarsubasi's&nbsp;<span className="color-fg-muted">blog</span>
+          <Link
+            to="/"
+            className="d-flex flex-items-center text-bold no-underline f3"
+            style={{ color: headerColor }}
+          >
+            <span>basarsubasi's</span>
+            <span style={{ marginLeft: '0.35rem' }}>blog</span>
           </Link>
           <div className="d-flex flex-items-center">
             <button
@@ -42,18 +49,30 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <button
               type="button"
               onClick={toggleTheme}
-              className="btn-octicon mr-2"
+              className="d-inline-flex flex-items-center px-2 py-1"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: headerColor,
+                cursor: 'pointer',
+              }}
               title={t('theme')}
             >
-              <IonIcon icon={theme === 'light' ? moon : bulb} />
+              <IonIcon icon={theme === 'light' ? moon : bulb} style={{ fontSize: '1.3rem' }} />
             </button>
             <button
               type="button"
               onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
-              className="btn btn-invisible"
+              className="d-inline-flex flex-items-center px-2 py-1"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: headerColor,
+                cursor: 'pointer',
+              }}
               title={t('language')}
             >
-              <span className="mr-1"><IonIcon icon={languageOutline} /></span>
+              <IonIcon icon={languageOutline} style={{ fontSize: '1.1rem', marginRight: '0.35rem' }} />
               <span className="text-mono text-bold">{language.toUpperCase()}</span>
             </button>
           </div>

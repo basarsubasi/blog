@@ -187,7 +187,12 @@ const CreateBlogPost: React.FC = () => {
 
         <div className="mb-4">
           <label className="form-label">{t('content')}</label>
-          <div className="Box" data-color-mode={theme}>
+          <div
+            className="Box"
+            data-color-mode={theme}
+            data-light-theme="light"
+            data-dark-theme="dark"
+          >
             <MarkdownEditor value={content} onChange={setContent} height="500px" />
           </div>
         </div>
