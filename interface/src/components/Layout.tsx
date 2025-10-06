@@ -92,7 +92,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             href="https://github.com/basarsubasi/blog"
             target="_blank"
             rel="noopener noreferrer"
-            className="color-fg-accent text-underline"
+            className="footer-link"
           >
             {t('sourceCode')}
           </a>

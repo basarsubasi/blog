@@ -38,10 +38,10 @@ const BlogPostList: React.FC<BlogPostListProps> = ({ posts }) => {
       {posts.map((post, index) => (
         <article
           key={post.uuid}
-          className={`pb-5 ${index < posts.length - 1 ? 'border-bottom color-border-muted mb-5' : ''}`}
+          className={`pb-6 ${index < posts.length - 1 ? 'border-bottom color-border-muted mb-6' : ''}`}
         >
-          <Link to={`/posts/${post.slug}`} className="text-decoration-none">
-            <h2 className="h2 text-bold color-fg-default">
+          <Link to={`/posts/${post.slug}`} className="blogpost-title-link">
+            <h2 className="blogpost-title text-bold">
               {post.title}
             </h2>
           </Link>
