@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import pool from '../database/connection';
 import { markdownToHtml } from '../utils/markdownToHtml';
 import slugify from 'slugify';
+import { addTagsToBlogPost, updateBlogPostTags } from './tags';
 
 // Helper function to generate slug from title
 function generateSlug(title: string): string {
@@ -17,11 +18,11 @@ function generateSlug(title: string): string {
 
 /**
  * Create a new blog post
- * Body: { title, author, category, content_markdown }
+ * Body: { title, author, category, content_markdown, tags? }
  */
 export const createBlogPost = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { title, author, category, content_markdown } = req.body;
+    const { title, author, category, content_markdown, tags } = req.body;
 
     // Validation
     if (!title || !author || !category || !content_markdown) {
@@ -59,6 +60,21 @@ export const createBlogPost = async (req: Request, res: Response): Promise<void>
         content_html
       ]);
 
+      // Add tags if provided
+      if (tags && Array.isArray(tags) && tags.length > 0) {
+        await addTagsToBlogPost(conn, uuid, tags);
+      }
+
+      // Fetch tags for response
+      const tagsQuery = `
+        SELECT t.name
+        FROM tags t
+        INNER JOIN blogpost_tags bt ON t.uuid = bt.tag_uuid
+        WHERE bt.blogpost_uuid = ?
+      `;
+      const tagRows: any[] = await conn.query(tagsQuery, [uuid]);
+      const postTags = tagRows.map(row => row.name);
+
       res.status(201).json({
         message: 'Blog post created successfully',
         post: {
@@ -69,7 +85,8 @@ export const createBlogPost = async (req: Request, res: Response): Promise<void>
           date_posted,
           slug,
           content_markdown,
-          content_html
+          content_html,
+          tags: postTags
         }
       });
     } finally {
@@ -118,7 +135,21 @@ export const getAllBlogPosts = async (req: Request, res: Response): Promise<void
 
     const conn = await pool.getConnection();
     try {
-      const rows = await conn.query(query, params);
+      const rows: any[] = await conn.query(query, params);
+
+      // Fetch tags for each blog post
+      for (const post of rows) {
+        const tagsQuery = `
+          SELECT t.name
+          FROM tags t
+          INNER JOIN blogpost_tags bt ON t.uuid = bt.tag_uuid
+          WHERE bt.blogpost_uuid = ?
+          ORDER BY t.name ASC
+        `;
+        const tagRows: any[] = await conn.query(tagsQuery, [post.uuid]);
+        post.tags = tagRows.map(row => row.name);
+      }
+
       res.json({
         posts: rows,
         limit,
@@ -208,7 +239,20 @@ export const getBlogPostBySlug = async (req: Request, res: Response): Promise<vo
         return;
       }
 
-      res.json(rows[0]);
+      const post = rows[0];
+
+      // Fetch tags for the blog post
+      const tagsQuery = `
+        SELECT t.name
+        FROM tags t
+        INNER JOIN blogpost_tags bt ON t.uuid = bt.tag_uuid
+        WHERE bt.blogpost_uuid = ?
+        ORDER BY t.name ASC
+      `;
+      const tagRows: any[] = await conn.query(tagsQuery, [post.uuid]);
+      post.tags = tagRows.map(row => row.name);
+
+      res.json(post);
     } finally {
       conn.release();
     }
@@ -220,12 +264,12 @@ export const getBlogPostBySlug = async (req: Request, res: Response): Promise<vo
 
 /**
  * Update a blog post
- * Body: { title?, author?, category?, content_markdown? }
+ * Body: { title?, author?, category?, content_markdown?, tags? }
  */
 export const updateBlogPost = async (req: Request, res: Response): Promise<void> => {
   try {
     const { uuid } = req.params;
-    const { title, author, category, content_markdown } = req.body;
+    const { title, author, category, content_markdown, tags } = req.body;
 
     // Build dynamic update query
     const updates: string[] = [];
@@ -252,26 +296,32 @@ export const updateBlogPost = async (req: Request, res: Response): Promise<void>
       params.push(markdownToHtml(content_markdown));
     }
 
-    if (updates.length === 0) {
+    if (updates.length === 0 && !tags) {
       res.status(400).json({ error: 'No fields to update' });
       return;
     }
 
-    params.push(uuid);
-
-    const query = `
-      UPDATE blogposts
-      SET ${updates.join(', ')}
-      WHERE uuid = ?
-    `;
-
     const conn = await pool.getConnection();
     try {
-      const result: any = await conn.query(query, params);
+      // Update blog post fields if there are any
+      if (updates.length > 0) {
+        params.push(uuid);
+        const query = `
+          UPDATE blogposts
+          SET ${updates.join(', ')}
+          WHERE uuid = ?
+        `;
+        const result: any = await conn.query(query, params);
 
-      if (result.affectedRows === 0) {
-        res.status(404).json({ error: 'Blog post not found' });
-        return;
+        if (result.affectedRows === 0) {
+          res.status(404).json({ error: 'Blog post not found' });
+          return;
+        }
+      }
+
+      // Update tags if provided
+      if (tags && Array.isArray(tags)) {
+        await updateBlogPostTags(conn, uuid, tags);
       }
 
       res.json({ message: 'Blog post updated successfully' });

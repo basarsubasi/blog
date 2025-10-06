@@ -50,6 +50,25 @@ async function initializeDatabase() {
       );`
   );
 
+    // Create the tags table
+    await pool.query(`
+    CREATE TABLE IF NOT EXISTS tags (
+      uuid VARCHAR(36) PRIMARY KEY,
+      name VARCHAR(50) NOT NULL UNIQUE,
+      );`
+  );
+
+    // Create the blogpost_tags junction table
+    await pool.query(`
+    CREATE TABLE IF NOT EXISTS blogpost_tags (
+      blogpost_uuid VARCHAR(36) NOT NULL,
+      tag_uuid VARCHAR(36) NOT NULL,
+      PRIMARY KEY (blogpost_uuid, tag_uuid),
+      FOREIGN KEY (blogpost_uuid) REFERENCES blogposts(uuid) ON DELETE CASCADE,
+      FOREIGN KEY (tag_uuid) REFERENCES tags(uuid) ON DELETE CASCADE
+      );`
+  );
+
     console.log('Database initialized successfully.');
   } catch (error) {
     console.error('Error initializing database:', error);

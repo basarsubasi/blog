@@ -4,6 +4,7 @@ import initializeDatabase from './database/init-db';
 import cors from 'cors';
 import authRouter from './routes/auth';
 import blogpostsRouter from './routes/blogposts';
+import tagsRouter from './routes/tags';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(cors({
 // API Routes
 app.use('/api/auth', authRouter);
 app.use('/api/blogposts', blogpostsRouter);
+app.use('/api/tags', tagsRouter);
 
 
 

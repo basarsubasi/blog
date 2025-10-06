@@ -18,3 +18,16 @@ CREATE TABLE IF NOT EXISTS blogposts (
   content_html TEXT NOT NULL UNIQUE,
   FULLTEXT INDEX ft_search (title, content_markdown)
 );
+
+CREATE TABLE IF NOT EXISTS tags (
+  uuid VARCHAR(36) PRIMARY KEY,
+  name VARCHAR(50) NOT NULL UNIQUE,
+);
+
+CREATE TABLE IF NOT EXISTS blogpost_tags (
+  blogpost_uuid VARCHAR(36) NOT NULL,
+  tag_uuid VARCHAR(36) NOT NULL,
+  PRIMARY KEY (blogpost_uuid, tag_uuid),
+  FOREIGN KEY (blogpost_uuid) REFERENCES blogposts(uuid) ON DELETE CASCADE,
+  FOREIGN KEY (tag_uuid) REFERENCES tags(uuid) ON DELETE CASCADE
+);
