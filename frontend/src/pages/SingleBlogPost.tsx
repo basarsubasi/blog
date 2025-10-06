@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useParams} from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import api from '../utils/api';
 import type { BlogPost } from '../types';
@@ -33,13 +31,10 @@ hljs.registerLanguage('yaml', yaml);
 
 const SingleBlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const { t } = useLanguage();
+  
   const { theme } = useTheme();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
-  const [deleting, setDeleting] = useState(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -59,22 +54,7 @@ const SingleBlogPost: React.FC = () => {
     fetchPost();
   }, [slug]);
 
-  const handleDelete = async () => {
-    if (!post || !window.confirm(t('confirmDelete') || 'Are you sure you want to delete this post?')) {
-      return;
-    }
 
-    setDeleting(true);
-    try {
-      await api.delete(`/api/blogposts/${post.uuid}`);
-      navigate('/');
-    } catch (error) {
-      console.error('Error deleting post:', error);
-      alert('Failed to delete post');
-    } finally {
-      setDeleting(false);
-    }
-  };
 
   useEffect(() => {
     if (!post || !contentRef.current) {
@@ -222,16 +202,6 @@ const SingleBlogPost: React.FC = () => {
         dangerouslySetInnerHTML={{ __html: post.content_html }}
       />
 
-      {isAuthenticated && (
-        <div className="mt-6 pt-6 border-top color-border-muted d-flex">
-          <Link to={`/edit/${post.slug}`} className="btn btn-primary mr-2">
-            {t('edit') || 'Edit'}
-          </Link>
-          <button onClick={handleDelete} disabled={deleting} className="btn btn-danger">
-            {deleting ? 'Deleting...' : t('delete')}
-          </button>
-        </div>
-      )}
     </article>
   );
 };
