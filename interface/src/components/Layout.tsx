@@ -57,7 +57,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Page Content */}
-      <div className="content">{children}</div>
+      <div className="content">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {children}
+        </div>
+      </div>
 
       {/* Footer */}
       <footer className="page-footer">

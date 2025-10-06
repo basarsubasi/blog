@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 import api from '../utils/api';
 import type { Tag } from '../types';
 
 const CreateBlogPost: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { theme } = useTheme();
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [category, setCategory] = useState('');
@@ -67,7 +69,7 @@ const CreateBlogPost: React.FC = () => {
   };
 
   return (
-    <div className="py-8">
+    <div className="max-w-4xl mx-auto py-8">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
         {t('createPost')}
       </h1>
@@ -86,7 +88,7 @@ const CreateBlogPost: React.FC = () => {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('author')}
@@ -131,49 +133,55 @@ const CreateBlogPost: React.FC = () => {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {t('tags')}
           </label>
-          <div className="flex flex-wrap gap-2">
-            {availableTags.map((tag) => (
-              <button
-                key={tag.uuid}
-                type="button"
-                onClick={() => toggleTag(tag.name)}
-                className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                  selectedTags.includes(tag.name)
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                }`}
-              >
-                {tag.name}
-              </button>
-            ))}
-          </div>
+          {availableTags.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {availableTags.map((tag) => (
+                <button
+                  key={tag.uuid}
+                  type="button"
+                  onClick={() => toggleTag(tag.name)}
+                  className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                    selectedTags.includes(tag.name)
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  {tag.name}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              No tags available. Tags will appear here once created.
+            </p>
+          )}
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {t('content')}
           </label>
-          <div className="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden">
+          <div className="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden" data-color-mode={theme}>
             <MarkdownEditor
               value={content}
               onChange={setContent}
-              height="400px"
+              height="500px"
             />
           </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 pt-4">
           <button
             type="submit"
             disabled={creating}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 font-medium"
           >
             {creating ? t('creating') : t('save')}
           </button>
           <button
             type="button"
             onClick={() => navigate('/')}
-            className="px-6 py-2 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
+            className="px-6 py-2 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors font-medium"
           >
             {t('cancel')}
           </button>

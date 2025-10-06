@@ -73,7 +73,7 @@ const SingleBlogPost: React.FC = () => {
         <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
           <span>{post.author}</span>
           <span>•</span>
-          <time>{new Date(post.date_posted).toLocaleDateString('en-GB')}</time>
+          <time>{new Date(post.date_posted).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</time>
           <span>•</span>
           <Link 
             to={`/category/${post.category}`}
