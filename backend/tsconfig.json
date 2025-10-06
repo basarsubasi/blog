@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es2016",                                /* Specify the JavaScript language version. */
+    "module": "commonjs",                              /* Use CommonJS modules, suitable for Node.js. */
+    "rootDir": "./src",                                /* Specify the root directory for input files. */
+    "outDir": "./dist",                                /* Specify the output directory for compiled files. */
+    "strict": true,                                    /* Enable strict type-checking options. */
+
+    /* Module Resolution */
+    "moduleResolution": "node",                       /* Resolve modules using Node.js-style module resolution. */
+    "esModuleInterop": true,                          /* Enable interoperability between CommonJS and ES Modules. */
+    "forceConsistentCasingInFileNames": true,         /* Ensure consistent casing in file imports. */
+
+    /* Type Checking */
+    "skipLibCheck": true,                             /* Skip type checking for declaration files (.d.ts). */
+
+    /* Source Maps */
+    "sourceMap": true,                                /* Enable source maps for debugging. */
+
+    /* Other Options */
+    "noImplicitAny": true,                            /* Raise an error on expressions and declarations with an implied `any` type. */
+    "strictNullChecks": true                          /* Enable strict null checking. */
+  },
+  "include": [
+    "src/**/*"                                        /* Include all TypeScript files in the `src` directory. */
+  ],
+  "exclude": [
+    "node_modules",                                   /* Exclude dependencies. */
+    "dist"                                            /* Exclude output folder. */
+  ]
+}
