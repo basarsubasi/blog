@@ -111,30 +111,18 @@ const SingleBlogPost: React.FC = () => {
       <header className="mb-5">
         <h1 className="f00-light text-bold mb-3 color-fg-default">{post.title}</h1>
         <div className="d-flex flex-wrap flex-items-center text-small color-fg-muted">
-          <span className="mr-2">{post.author}</span>
-          <span className="mr-2">·</span>
-          <time className="mr-2">
+          <span className="mr-2 f4">{post.author}</span>
+          <span className="mr-2 f4">·</span>
+          <time className="mr-2 f4">
             {new Date(post.date_posted).toLocaleDateString('en-GB', {
               day: '2-digit',
               month: '2-digit',
               year: 'numeric',
             })}
           </time>
-          <span className="mr-2">·</span>
-          <Link to={`/category/${post.category}`} className="Link--secondary">
-            {post.category}
-          </Link>
+         
         </div>
-        {post.tags && post.tags.length > 0 && (
-          <div className="d-flex flex-wrap mt-3">
-            {post.tags.map((tag) => (
-              <Link key={tag} to={`/tags/${tag}`} className="Label Label--accent mr-2 mb-2">
-                #{tag}
-              </Link>
-            ))}
-          </div>
-        )}
-      </header>
+         </header>
 
       <div
         className="markdown-body"

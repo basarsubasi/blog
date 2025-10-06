@@ -46,7 +46,7 @@ const BlogPostList: React.FC<BlogPostListProps> = ({ posts }) => {
             </h2>
           </Link>
 
-          <div className="text-small color-fg-muted mb-2">
+          <div className="text-medium color-fg-muted mb-2 ">
             {formatDate(post.date_posted)}
           </div>
 
