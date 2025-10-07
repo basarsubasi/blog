@@ -54,16 +54,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="d-flex flex-column color-bg-canvas" style={{ minHeight: '100vh' }}>
       <header className="color-bg-default border-bottom color-border-muted">
         <div className="container-lg d-flex flex-wrap flex-justify-between flex-items-center py-3">
-          <div className="d-flex flex-items-center mb-3 mb-md-0">
+          <div className="d-flex mb-3 mb-md-0" style={{ alignItems: 'baseline' }}>
             <Link
               to="/"
-              className="d-flex flex-items-center text-bold no-underline f3"
+              className="text-bold no-underline f3"
               style={{ color: headerColor }}
             >
               <span>{t('blogtitle')}</span>
               <span style={{ marginLeft: '0.35rem' }}>{t('blog')}</span>
             </Link>
-            <nav className="d-flex flex-items-center text-bold no-underline f3 ml-4 ">
+            <nav className="d-flex text-bold no-underline f3 ml-4" style={{ alignItems: 'baseline' }}>
               <Link
                 to="/category/teknoloji"
                 className="Header-link mr-3"
