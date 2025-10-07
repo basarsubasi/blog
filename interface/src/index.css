@@ -251,7 +251,15 @@
 		flex: 1;
 	}
 
-	/* Adjust navigation spacing */
+	/* Adjust navigation spacing and alignment */
+	header .header-nav-wrapper {
+		align-items: baseline !important;
+	}
+
+	header .header-nav-wrapper .d-flex {
+		align-items: baseline !important;
+	}
+
 	header nav {
 		margin-left: 0 !important;
 		margin-top: 0.5rem;
