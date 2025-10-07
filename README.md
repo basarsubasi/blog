@@ -22,7 +22,7 @@ blog/
 │   └── docker-compose.yaml.example
 │
 │
-├── docker-compose.yaml.example           # Main Docker Compose configuration
+├── docker-compose.yaml.example  # Main Docker Compose configuration
 └── .env.example                 # Environment variables template
 ```
 
