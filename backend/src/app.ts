@@ -13,9 +13,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: '*', // Allow all origins
-  methods: '*',
-  allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin', 'X-Requested-With', 'X-Api-Key']
+  origin: ['https://gallery.basarsubasi.com.tr', 'https://galleryinterface.basarsubasi.com.tr'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin', 'X-Requested-With', 'X-Api-Key'],
+  credentials: true
 }));
 
 // API Routes
