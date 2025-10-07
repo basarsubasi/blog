@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   });
 
   const headerColor = theme === 'dark' ? '#f0f6fc' : '#24292f';
-  const apiBaseUrl ='http://blogbackend.localhost';
+  const apiBaseUrl ='https://blogbackend.basarsubasi.com.tr';
   const rssUrl = `${apiBaseUrl.replace(/\/$/, '')}/rss.xml`;
 
   useEffect(() => {

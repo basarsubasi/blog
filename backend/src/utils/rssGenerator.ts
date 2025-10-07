@@ -34,7 +34,7 @@ export async function generateRssFeed(): Promise<string> {
     }
 
     // Build RSS feed
-    const baseUrl = 'http://blog.local';
+    const baseUrl = 'https://blog.basarsubasi.com.tr';
     const currentDate = new Date().toUTCString();
     const blogTitle = "basarsubasi's blog";
     const blogDescription = "Son Yazılar";
