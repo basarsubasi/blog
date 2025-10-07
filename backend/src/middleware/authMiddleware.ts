@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: '../../.env' });
 
 // Get environment variables
 const BLOG_BACKEND_JWT_SECRET = process.env.BLOG_BACKEND_JWT_SECRET || ""

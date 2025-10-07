@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import dotenv from 'dotenv';
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: '../../.env' });
 
 // Interface to extend Express Request type
 declare global {

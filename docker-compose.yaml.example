@@ -1,0 +1,134 @@
+services:
+
+  nodejs:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    
+    environment:
+      - BLOG_DB_HOST=mariadb
+      - BLOG_DB_NAME=blog_db
+      - BLOG_DB_USER=${BLOG_DB_USER}
+      - BLOG_DB_PASSWORD=${BLOG_DB_PASSWORD}
+      - BLOG_BACKEND_API_KEY=${BLOG_BACKEND_API_KEY}
+      - BLOG_BACKEND_JWT_SECRET=${BLOG_BACKEND_JWT_SECRET}
+      - BLOG_BACKEND_PORT=${BLOG_BACKEND_PORT}
+    networks:
+      - backend
+      - database
+
+   # labels for Traefik disable if not using Traefik
+   # If Traefik is enabled ports are not necessary
+
+
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.blogbackend.rule=Host(`blogbackend.localhost`)"
+    - "traefik.http.routers.blogbackend.entrypoints=web"
+    - "traefik.http.services.blogbackend.loadbalancer.server.port=${BLOG_BACKEND_PORT}"
+    
+    depends_on:
+      - mariadb
+   
+
+   # IMPORTANT!! -> IF YOU ARE NOT USING TRAEFIK ENABLE PORTS
+   #  change frontend/utils/api.ts and interface/utils/api.ts if you are not using Traefik
+   # ports: 
+   # # HOST PORT:CONTAINER PORT
+   # - 6767:${BLOG_BACKEND_PORT}
+   # restart: unless-stopped  
+    
+  mariadb:
+    image: mariadb:10.6
+    environment:
+      - MARIADB_ROOT_PASSWORD=${BLOG_DB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=blog_db
+      - MARIADB_USER=${BLOG_DB_USER}
+      - MARIADB_PASSWORD=${BLOG_DB_PASSWORD}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - database
+
+# IMPORTANT!! -> IF YOU ARE NOT USING TRAEFIK ENABLE PORTS (you might want to skip enabling ports for the database)
+#  change frontend/utils/api.ts and interface/utils/api.ts if you are not using Traefik
+
+    # ports: 
+    # HOST PORT:CONTAINER PORT
+    # - 6768:3306
+    
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+
+    
+   # labels for Traefik disable if not using Traefik
+   # If Traefik is enabled ports are not necessary
+
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.blogfrontend.rule=Host(`blog.localhost`)"
+     - "traefik.http.routers.blogfrontend.entrypoints=web"
+     - "traefik.http.services.blogfrontend.loadbalancer.server.port=80"
+    
+    
+    depends_on:
+     - nodejs
+    networks:
+     - frontend
+    
+   # IMPORTANT!! -> IF YOU ARE NOT USING TRAEFIK ENABLE PORTS
+   #  change frontend/utils/api.ts and interface/utils/api.ts if you are not using Traefik
+
+   # ports: 
+   # HOST PORT:CONTAINER PORT
+   # - 6769:80
+    restart: unless-stopped
+
+
+  interface:
+    build:
+      context: interface
+      dockerfile: Dockerfile
+
+
+   # labels for Traefik disable if not using Traefik
+   # If Traefik is enabled ports are not necessary
+
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.bloginterface.rule=Host(`bloginterface.localhost`)"
+     - "traefik.http.routers.bloginterface.entrypoints=web"
+     - "traefik.http.services.bloginterface.loadbalancer.server.port=80"
+
+    # IMPORTANT!! -> IF YOU ARE NOT USING TRAEFIK ENABLE PORTS
+   #  change frontend/utils/api.ts and interface/utils/api.ts if you are not using Traefik
+
+   # ports:
+   # # HOST PORT:CONTAINER PORT
+   # - 6770:80
+    
+    
+    depends_on:
+     - nodejs
+    networks:
+     - interface
+    
+    restart: unless-stopped
+
+# IMPORTANT -> DELETE networks SECTIONS FROM EVERYWHERE IF YOU ARE NOT USING TRAEFIK
+networks:
+  backend:
+    external: false
+  database:
+    external: false
+  frontend:
+    external: false
+  interface:
+    external: false
+
+volumes:
+  mariadb_data:

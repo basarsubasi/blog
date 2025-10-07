@@ -1,0 +1,33 @@
+
+
+services:
+  # Traefik reverse proxy service (there can only one Traefik instance running on port 80, if you host other services and want to serve them with Traefik, you need to add them to your Traefik yaml as well)
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: unless-stopped
+    ports:
+      - "80:80"     # HTTP
+    networks:
+      - blog_backend
+      - blog_frontend
+      - blog_interface
+      
+    command:
+      # Enable Docker provider
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=blog_frontend,blog_backend,blog_interface
+      # Configure entrypoints
+      - --entrypoints.web.address=:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+   
+networks:
+  blog_frontend:
+    external: true
+  blog_backend:
+    external: true
+  blog_interface:
+    external: true
