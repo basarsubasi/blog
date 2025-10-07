@@ -17,7 +17,12 @@ blog/
 ├── interface/                   # Admin interface for blog management (React.js + TypeScript)
 │   └── Dockerfile
 │
-├── docker-compose.yml           # Main Docker Compose configuration
+│
+├── traefik/                     # Traefik reverse proxy
+│   └── docker-compose.yaml.example
+│
+│
+├── docker-compose.yaml.example           # Main Docker Compose configuration
 └── .env.example                 # Environment variables template
 ```
 
