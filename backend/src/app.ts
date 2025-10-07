@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: ['https://gallery.basarsubasi.com.tr', 'https://galleryinterface.basarsubasi.com.tr'],
+  origin: ['https://blog.basarsubasi.com.tr', 'https://bloginterface.basarsubasi.com.tr'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin', 'X-Requested-With', 'X-Api-Key'],
   credentials: true
