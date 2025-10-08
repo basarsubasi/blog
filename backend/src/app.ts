@@ -20,8 +20,8 @@ app.use(cors({
 }));
 
 app.get('/healthz', (req,res) => {
-  res.status(200).json({status:'ok'})
-} )
+  res.status(200).json({status:'ok'});
+});
 
 // API Routes
 app.use('/api/auth', authRouter);
