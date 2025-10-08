@@ -18,6 +18,8 @@ app.use(cors({
   allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin', 'X-Requested-With', 'X-Api-Key']
 }));
 
+
+
 // API Routes
 app.use('/api/auth', authRouter);
 app.use('/api/blogposts', blogpostsRouter);
@@ -34,6 +36,11 @@ app.get('/rss.xml', async (req, res) => {
     console.error('Error serving RSS feed:', error);
     res.status(500).send('Failed to generate RSS feed');
   }
+});
+
+// Health check endpoint
+app.get('/healthz', (req, res) => {
+  res.status(200).json({ status: 'ok' });
 });
 
 // Initialize the database
