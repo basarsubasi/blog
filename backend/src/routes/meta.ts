@@ -88,30 +88,21 @@ router.get('/posts/:slug', async (req: Request, res: Response): Promise<void> =>
   <!-- Primary Meta Tags -->
   <title>${escapeHtml(post.title)}</title>
   <meta name="title" content="${escapeHtml(post.title)}">
+  <meta name="description" content="${escapeHtml(post.content_markdown.substring(0, 150))}...">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://blog.basarsubasi.com.tr/posts/${escapeHtml(post.slug)}">
   <meta property="og:title" content="${escapeHtml(post.title)}">
+  <meta property="og:description" content="${escapeHtml(post.content_markdown.substring(0, 150))}...">
   <meta property="og:site_name" content="basarsubasi's blog">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary">
   <meta property="twitter:url" content="https://blog.basarsubasi.com.tr/posts/${escapeHtml(post.slug)}">
   <meta property="twitter:title" content="${escapeHtml(post.title)}">
-  
-  <!-- Article Meta -->
-  <meta property="article:published_time" content="${new Date(post.date_posted).toISOString()}">
-  <meta property="article:author" content="${escapeHtml(post.author)}">
-  
-  <link rel="icon" type="image/svg+xml" href="/icon.png">
+  <meta property="twitter:description" content="${escapeHtml(post.content_markdown.substring(0, 150))}..."> 
 </head>
-<body>
-  <article>
-    <h1>${escapeHtml(post.title)}</h1>
-    <p>${escapeHtml(post.content_markdown.substring(0, 150))}</p>
-  </article>
-</body>
 </html>
     `;
 
