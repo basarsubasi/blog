@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams} from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import api from '../utils/api';
 import type { BlogPost } from '../types';
@@ -179,7 +179,21 @@ const SingleBlogPost: React.FC = () => {
               year: 'numeric',
             })}
           </time>
-         
+
+          {post.tags && post.tags.length > 0 && (
+            <span className="d-flex flex-wrap">
+              {post.tags.map((t) => (
+                <Link
+                  key={t}
+                  to={`/tags/${t}`}
+                  className="mr-2 f4 color-fg-muted"
+                >
+                  {`#${t}`}
+                </Link>
+              ))}
+            </span>
+          )}
+
         </div>
          </header>
 

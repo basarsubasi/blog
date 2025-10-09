@@ -4,6 +4,7 @@ import BlogPostList from '../components/BlogPostList';
 import Pagination from '../components/Pagination';
 import api from '../utils/api';
 import type { BlogPost } from '../types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const POSTS_PER_PAGE = 5;
 
@@ -12,6 +13,13 @@ const TagPage: React.FC = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
+
+  const sanitizeTag = (value: string | undefined): string => {
+    if (!value) return '';
+    return value.replace(/[<>]/g, '').slice(0, 120);
+  };
+
+  const { t } = useLanguage();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -42,15 +50,23 @@ const TagPage: React.FC = () => {
   }, [tag]);
 
 
+  const displayTag = sanitizeTag(tag);
+
   return (
-    <>
+    <div className="container-lg mx-auto py-6">
+      {displayTag && (
+        <h1 className="h2 text-bold mb-5 color-fg-default">
+          {`"#${displayTag}" ${t('postsWithTag')}`}
+        </h1>
+      )}
+
       <BlogPostList posts={posts} />
       <Pagination
         currentPage={currentPage}
         hasMore={hasMore}
         onPageChange={setCurrentPage}
       />
-    </>
+    </div>
   );
 };
 
