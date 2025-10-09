@@ -5,6 +5,7 @@ import cors from 'cors';
 import authRouter from './routes/auth';
 import blogpostsRouter from './routes/blogposts';
 import tagsRouter from './routes/tags';
+import metaRouter from './routes/meta';
 import { getCachedRssFeed, regenerateAllRssFeeds } from './utils/rssGenerator';
 
 dotenv.config({ path: '../../.env' });
@@ -27,6 +28,7 @@ app.get('/healthz', (req,res) => {
 app.use('/api/auth', authRouter);
 app.use('/api/blogposts', blogpostsRouter);
 app.use('/api/tags', tagsRouter);
+app.use('/meta', metaRouter);
 
 // RSS Feed Routes
 // Main RSS feed (all posts)
