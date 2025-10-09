@@ -11,11 +11,7 @@ const BlogPostList: React.FC<BlogPostListProps> = ({ posts }) => {
   const { t } = useLanguage();
 
   if (posts.length === 0) {
-    return (
-      <div className="d-flex flex-justify-center py-6">
-        {t('noPosts')}
-      </div>
-    );
+    return null
   }
 
   const formatDate = (dateString: string) => {

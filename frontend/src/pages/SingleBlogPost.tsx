@@ -157,12 +157,9 @@ const SingleBlogPost: React.FC = () => {
   }, [post]);
 
 
+
   if (!post) {
-    return (
-      <div className="d-flex flex-justify-center py-6">
-        <p className="color-fg-muted">Post not found</p>
-      </div>
-    );
+    return null;
   }
 
   return (
