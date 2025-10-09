@@ -108,13 +108,16 @@ const CreateBlogPost: React.FC = () => {
 
         <div className="mb-3">
           <label className="form-label">{t('category')}</label>
-          <input
-            type="text"
+          <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className="form-control width-full"
             required
-          />
+          >
+            <option value="">{'kategori seç'}</option>
+            <option value="teknoloji">teknoloji</option>
+            <option value="felsefe">felsefe</option>
+          </select>
         </div>
 
         <div className="mb-3">
@@ -126,6 +129,11 @@ const CreateBlogPost: React.FC = () => {
             className="form-control width-full"
             required
           />
+          <div className="mt-1 text-small color-fg-muted">
+            {datePosted
+              ? `${datePosted.split('-')[2]}-${datePosted.split('-')[1]}-${datePosted.split('-')[0]}`
+              : ''}
+          </div>
         </div>
 
         <div className="mb-4">

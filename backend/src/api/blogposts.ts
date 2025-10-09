@@ -37,9 +37,20 @@ export const createBlogPost = async (req: Request, res: Response): Promise<void>
     const content_html = markdownToHtml(content_markdown);
     
     // Generate unique identifiers
-    const uuid = uuidv4();
-    const slug = generateSlug(title);
-    const date_posted = new Date();
+      const uuid = uuidv4();
+      const slug = generateSlug(title);
+      // Use date from request if provided, else fallback to now
+      let date_posted: Date;
+      if (req.body.date_posted) {
+        // Accept both string (YYYY-MM-DD) and Date
+        date_posted = new Date(req.body.date_posted);
+        if (isNaN(date_posted.getTime())) {
+          // Invalid date, fallback to now
+          date_posted = new Date();
+        }
+      } else {
+        date_posted = new Date();
+      }
 
     // Insert into database
     const query = `
@@ -324,7 +335,7 @@ export const getBlogPostBySlug = async (req: Request, res: Response): Promise<vo
 export const updateBlogPost = async (req: Request, res: Response): Promise<void> => {
   try {
     const { uuid } = req.params;
-    const { title, author, category, content_markdown, tags } = req.body;
+    const { title, author, category, content_markdown, tags, date_posted } = req.body;
 
     // Build dynamic update query
     const updates: string[] = [];
@@ -349,6 +360,14 @@ export const updateBlogPost = async (req: Request, res: Response): Promise<void>
       params.push(content_markdown);
       updates.push('content_html = ?');
       params.push(markdownToHtml(content_markdown));
+    }
+    if (date_posted) {
+      // Accept both string (YYYY-MM-DD) and Date
+      const parsedDate = new Date(date_posted);
+      if (!isNaN(parsedDate.getTime())) {
+        updates.push('date_posted = ?');
+        params.push(parsedDate);
+      }
     }
 
     if (updates.length === 0 && !tags) {
