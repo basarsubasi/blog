@@ -8,13 +8,11 @@ const POSTS_PER_PAGE = 5;
 
 const Homepage: React.FC = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      setLoading(true);
       try {
         const offset = (currentPage - 1) * POSTS_PER_PAGE;
         const response = await api.get<{ posts: BlogPost[] }>('/api/blogposts', {
@@ -28,22 +26,12 @@ const Homepage: React.FC = () => {
         setHasMore(hasMorePosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchPosts();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
-
-  if (loading) {
-    return (
-      <div className="d-flex flex-justify-center flex-items-center py-6">
-        <p className="color-fg-muted">Loading...</p>
-      </div>
-    );
-  }
 
   return (
     <>

@@ -34,7 +34,6 @@ const SingleBlogPost: React.FC = () => {
   
   const { theme } = useTheme();
   const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(true);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -46,8 +45,6 @@ const SingleBlogPost: React.FC = () => {
         setPost(response.data);
       } catch (error) {
         console.error('Error fetching post:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -159,13 +156,6 @@ const SingleBlogPost: React.FC = () => {
     };
   }, [post]);
 
-  if (loading) {
-    return (
-      <div className="d-flex flex-justify-center flex-items-center py-6">
-        <p className="color-fg-muted">Loading...</p>
-      </div>
-    );
-  }
 
   if (!post) {
     return (

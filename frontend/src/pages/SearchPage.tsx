@@ -16,7 +16,6 @@ const SearchPage: React.FC = () => {
   const location = useLocation();
   const { t } = useLanguage();
   const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
@@ -35,7 +34,6 @@ const SearchPage: React.FC = () => {
     }
 
     let isMounted = true;
-    setLoading(true);
     setError(null);
 
     const offset = (currentPage - 1) * POSTS_PER_PAGE;
@@ -56,11 +54,6 @@ const SearchPage: React.FC = () => {
         if (!isMounted) return;
         setError(t('searchError') || t('error'));
         setPosts([]);
-      })
-      .finally(() => {
-        if (isMounted) {
-          setLoading(false);
-        }
       });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -84,13 +77,6 @@ const SearchPage: React.FC = () => {
     );
   }
 
-  if (loading) {
-    return (
-      <div className="d-flex flex-justify-center flex-items-center py-6">
-        <p className="color-fg-muted">{t('searching')}</p>
-      </div>
-    );
-  }
 
   if (error) {
     return (

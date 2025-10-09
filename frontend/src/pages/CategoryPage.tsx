@@ -10,7 +10,6 @@ const POSTS_PER_PAGE = 5;
 const CategoryPage: React.FC = () => {
   const { category } = useParams<{ category: string }>();
   const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
@@ -18,7 +17,6 @@ const CategoryPage: React.FC = () => {
     const fetchPosts = async () => {
       if (!category) return;
       
-      setLoading(true);
       try {
         const offset = (currentPage - 1) * POSTS_PER_PAGE;
         const response = await api.get<{ posts: BlogPost[] }>(
@@ -31,8 +29,6 @@ const CategoryPage: React.FC = () => {
         setHasMore(hasMorePosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -45,13 +41,6 @@ const CategoryPage: React.FC = () => {
     setCurrentPage(1);
   }, [category]);
 
-  if (loading) {
-    return (
-      <div className="d-flex flex-justify-center flex-items-center py-6">
-        <p className="color-fg-muted">Loading...</p>
-      </div>
-    );
-  }
 
   return (
     <>

@@ -10,15 +10,13 @@ const POSTS_PER_PAGE = 5;
 const TagPage: React.FC = () => {
   const { tag } = useParams<{ tag: string }>();
   const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
       if (!tag) return;
-      
-      setLoading(true);
+
       try {
         const offset = (currentPage - 1) * POSTS_PER_PAGE;
         const response = await api.get<{ posts: BlogPost[] }>(
@@ -31,9 +29,7 @@ const TagPage: React.FC = () => {
         setHasMore(hasMorePosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchPosts();
@@ -45,13 +41,6 @@ const TagPage: React.FC = () => {
     setCurrentPage(1);
   }, [tag]);
 
-  if (loading) {
-    return (
-      <div className="d-flex flex-justify-center flex-items-center py-6">
-        <p className="color-fg-muted">Loading...</p>
-      </div>
-    );
-  }
 
   return (
     <>
