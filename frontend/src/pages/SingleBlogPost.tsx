@@ -182,6 +182,7 @@ const SingleBlogPost: React.FC = () => {
 
           {post.tags && post.tags.length > 0 && (
             <span className="d-flex flex-wrap">
+              <span className="mr-2 f4">·</span>
               {post.tags.map((t) => (
                 <Link
                   key={t}
