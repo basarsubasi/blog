@@ -77,6 +77,8 @@ router.get('/posts/:slug', async (req: Request, res: Response): Promise<void> =>
 
     const post = rows[0];
 
+    const description = stripHtml(post.content_html).substring(0, 150);
+
     // Generate HTML with proper meta tags
     const html = `
 <!DOCTYPE html>
@@ -88,20 +90,20 @@ router.get('/posts/:slug', async (req: Request, res: Response): Promise<void> =>
   <!-- Primary Meta Tags -->
   <title>${escapeHtml(post.title)}</title>
   <meta name="title" content="${escapeHtml(post.title)}">
-  <meta name="description" content="${escapeHtml(post.content_html.substring(0, 150))}...">
+  <meta name="description" content="${escapeHtml(description)}...">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://blog.basarsubasi.com.tr/posts/${escapeHtml(post.slug)}">
   <meta property="og:title" content="${escapeHtml(post.title)}">
-  <meta property="og:description" content="${escapeHtml(post.content_html.substring(0, 150))}...">
+  <meta property="og:description" content="${escapeHtml(description)}...">
   <meta property="og:site_name" content="basarsubasi's blog">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary">
   <meta property="twitter:url" content="https://blog.basarsubasi.com.tr/posts/${escapeHtml(post.slug)}">
   <meta property="twitter:title" content="${escapeHtml(post.title)}">
-  <meta property="twitter:description" content="${escapeHtml(post.content_html.substring(0, 150))}..."> 
+  <meta property="twitter:description" content="${escapeHtml(description)}..."> 
 </head>
 </html>
     `;
@@ -138,6 +140,10 @@ function escapeHtml(text: string): string {
     "'": '&#039;'
   };
   return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+function stripHtml(text: string): string {
+  return text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 export default router;
